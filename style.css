@@ -11,39 +11,66 @@ body {
 /* Envelope Screen */
 #envelope-container {
     text-align: center;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 @keyframes pulse {
     0% {
-        transform:scale(1);
+        transform: scale(1);
     }
+
     50% {
         transform: scale(1.1);
     }
+
     100% {
         transform: scale(1);
     }
 }
 
-#envelope{
+#envelope {
     width: 200px;
     animation: pulse 1.5s infinite;
     cursor: pointer;
 }
 
-#letter-container{
+#letter-container {
     display: none;
-    position:fixed;
+    position: fixed;
     inset: 0;
     justify-content: center;
     align-items: center;
+    perspective: 1200px;
 }
 
-.letter-window{
+/* Card Flip */
+.card-flip {
     width: 90vw;
     max-width: 800px;
     aspect-ratio: 3/2;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s ease;
+}
+
+.card-flip.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.letter-window {
+    width: 100%;
+    height: 100%;
     padding: 20px 20px 0 20px;
     display: flex;
     flex-direction: column;
@@ -57,6 +84,7 @@ body {
     border-radius: 12px;
     gap: 1px;
     padding-top: 180px;
+    box-sizing: border-box;
 
     transform: scale(1.2);
     opacity: 0;
@@ -68,9 +96,203 @@ body {
     opacity: 1;
 }
 
+/* Message Carousel */
+.msg-carousel {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    perspective: 800px;
+}
+
+.msg-card {
+    position: absolute;
+    inset: 0;
+    display: none;
+}
+
+.msg-card.active {
+    display: block;
+}
+
+.msg-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease;
+}
+
+.msg-card-inner.flipped {
+    transform: rotateY(180deg);
+}
+
+.msg-card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-image: url("window.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 160px 50px 20px 50px;
+    box-sizing: border-box;
+}
+
+.msg-card-face.msg-back {
+    transform: rotateY(180deg);
+}
+
+.msg-card-face h2 {
+    color: #8b1a2b;
+    font-size: 22px;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+    margin: 0 0 8px 0;
+}
+
+.msg-card-face .msg-text {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #5a1a1a;
+    margin: 0 10px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.55);
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-family: "Pixelify Sans", sans-serif;
+}
+
+.msg-counter {
+    font-size: 13px;
+    color: #c0392b;
+    margin-top: 6px;
+    opacity: 0.7;
+}
+
+/* Progress button */
+.next-btn {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 18px;
+    padding: 10px 24px;
+    border: 3px solid #e74c3c;
+    border-radius: 12px;
+    background: transparent;
+    color: #e74c3c;
+    cursor: default;
+    margin-top: 12px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0.6;
+    transition: opacity 0.3s, transform 0.2s;
+    z-index: 1;
+}
+
+.next-btn .progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #fff0f0;
+    z-index: -1;
+    border-radius: 9px;
+    animation: fillProgress 3s linear forwards;
+}
+
+.next-btn.ready {
+    opacity: 1;
+    cursor: pointer;
+    animation: pulse 1.5s infinite;
+}
+
+.next-btn.ready:hover {
+    background: #e74c3c;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.next-btn .btn-label {
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes fillProgress {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* Pencet aku button */
+.flip-btn {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 22px;
+    padding: 12px 28px;
+    border: 3px solid #e74c3c;
+    border-radius: 12px;
+    background: #fff0f0;
+    color: #e74c3c;
+    cursor: pointer;
+    margin-top: 10px;
+    animation: pulse 1.5s infinite;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.flip-btn:hover {
+    background: #e74c3c;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Yeayyy button */
+.yeay-btn {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 20px;
+    padding: 10px 24px;
+    border: 3px solid #e74c3c;
+    border-radius: 12px;
+    background: #fff0f0;
+    color: #e74c3c;
+    cursor: pointer;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    animation: pulse 1.5s infinite;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.yeay-btn:hover {
+    background: #e74c3c;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Confetti canvas */
+#confetti-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+#phase-yippee {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
 h1 {
     font-size: 30px;
-    margin:0;
+    margin: 0;
 }
 
 p {
@@ -97,8 +319,8 @@ p {
     position: relative;
 }
 
-.no-wrapper{
-    position:relative;
+.no-wrapper {
+    position: relative;
 }
 
 .btn {
@@ -109,9 +331,9 @@ p {
 
 .yes-btn,
 .no-btn {
-width: 120px;
-height: auto;
-display: inline-block;
+    width: 120px;
+    height: auto;
+    display: inline-block;
 }
 
 .yes-btn {
@@ -128,12 +350,55 @@ display: inline-block;
     cursor: default;
 }
 
-.final-text{
+.final-text {
     font-size: 22px;
     line-height: 1.4;
     text-align: center;
     display: inline-block;
     padding: 10px 20px;
-    background-color: rgba(255,240,240,0.5);
+    background-color: rgba(255, 240, 240, 0.5);
     border-radius: 12px;
+}
+
+/* Shake hint */
+.shake-hint {
+    font-size: 18px !important;
+    color: #c0392b;
+    animation: bounce-hint 1.2s ease-in-out infinite;
+    margin-top: 0;
+}
+
+@keyframes bounce-hint {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* iOS Permission Overlay */
+#ios-permission {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#ios-permit-btn {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 22px;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 12px;
+    background: #e74c3c;
+    color: #fff;
+    cursor: pointer;
+    animation: pulse 1.5s infinite;
 }
